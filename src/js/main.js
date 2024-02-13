@@ -5,12 +5,12 @@ let canvas, ctx;
 const width = 278;
 const height = 181;
 const imgPath = '../public/img/img.png';
+const minimumConfidence = 0.6;
 
-img = document.getElementById('example');
+let img = document.getElementById('example');
 
 async function make() {
-    // img = new Image();
-    // img.src = imgPath;
+
     img.width = width;
     img.height = height;
 
@@ -52,6 +52,7 @@ function draw() {
 
     ctx.drawImage(img, 0, 0);
     for (let i = 0; i < objects.length; i += 1) {
+        if(objects[i].confidence <= minimumConfidence) return;
 
         ctx.font = "16px Arial";
         ctx.fillStyle = "green";
