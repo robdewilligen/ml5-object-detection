@@ -1,0 +1,16 @@
+body {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    h1 {
+        color: #3a3ae3;
+        font-family: cursive;
+    }
+
+    canvas {
+        width: 280px;
+        height: 180px;
+    }
+
+}
