@@ -12,13 +12,14 @@ async function make() {
     img.width = width;
     img.height = height;
 
+    //Load the model
     objectDetector = await ml5.objectDetector('cocossd', startDetecting)
 
     canvas = createCanvas(width, height);
     ctx = canvas.getContext('2d');
 }
 
-// when the dom is loaded, call make();
+//When the dom is loaded, call make();
 window.addEventListener('DOMContentLoaded', function () {
     make();
 });
@@ -45,7 +46,7 @@ function detect() {
 
 //Draw a rectangle around the found object and label it
 function draw() {
-    // Clear part of the canvas
+    //Clear part of the canvas
     ctx.fillStyle = "#000000"
     ctx.fillRect(0, 0, width, height);
 
@@ -53,13 +54,23 @@ function draw() {
     for (let i = 0; i < objects.length; i += 1) {
         if(objects[i].confidence <= minimumConfidence) return;
 
+        //Convert confidence in '99,99%' format
         let confidence = objects[i].confidence * 10000;
         confidence = Math.round(confidence) / 100 + '%';
 
+        //Customize font
         ctx.font = "11px Arial";
         ctx.fillStyle = "green";
-        ctx.fillText([objects[i].label, confidence], objects[i].x + 4, objects[i].y + 16);
+        //Create text
+        txt = objects[i].label + '/n' + confidence;
+        //Linebreak text at '/n'
+        lines = txt.split('/n')
+        //Write text
+        for(let j = 0;j < lines.length;j++){
+            ctx.fillText(lines[j], objects[i].x + 4, objects[i].y + 11*j);
+        }
 
+        //Draw rectangle around object
         ctx.beginPath();
         ctx.rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
         ctx.strokeStyle = "green";
