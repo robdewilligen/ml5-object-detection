@@ -1,10 +1,8 @@
 let objectDetector;
-let status;
 let objects = [];
 let canvas, ctx;
-const width = 278;
-const height = 181;
-const imgPath = '../public/img/img.png';
+let width = 300;
+let height = 168;
 const minimumConfidence = 0.6;
 
 let img = document.getElementById('example');
@@ -45,6 +43,7 @@ function detect() {
     });
 }
 
+//Draw a rectangle around the found object and label it
 function draw() {
     // Clear part of the canvas
     ctx.fillStyle = "#000000"
@@ -54,9 +53,12 @@ function draw() {
     for (let i = 0; i < objects.length; i += 1) {
         if(objects[i].confidence <= minimumConfidence) return;
 
-        ctx.font = "16px Arial";
+        let confidence = objects[i].confidence * 10000;
+        confidence = Math.round(confidence) / 100 + '%';
+
+        ctx.font = "11px Arial";
         ctx.fillStyle = "green";
-        ctx.fillText(objects[i].label, objects[i].x + 4, objects[i].y + 16);
+        ctx.fillText([objects[i].label, confidence], objects[i].x + 4, objects[i].y + 16);
 
         ctx.beginPath();
         ctx.rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
@@ -66,7 +68,7 @@ function draw() {
     }
 }
 
-
+//Creates a canvas element
 function createCanvas(w, h) {
     const canvas = document.createElement("canvas");
     canvas.width = w;
